@@ -1,0 +1,5 @@
+print(int('10'))
+print(int('90'))
+print(int('0'))
+print(int('-10'))
+print(int('05'))

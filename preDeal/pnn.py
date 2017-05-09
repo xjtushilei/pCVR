@@ -1,6 +1,6 @@
 from keras import layers
 from keras.models import Sequential
-from get_data import *
+from get_data_v1 import *
 
 # 构建模型
 

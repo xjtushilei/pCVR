@@ -5,6 +5,8 @@
 
 # 安装过的包
 
+换源：-i https://pypi.tuna.tsinghua.edu.cn/simple
+
 - keras
 - tensorflow（ tensorflow-gpu）
 - numpy
@@ -13,3 +15,9 @@
 - matplotlib
 - scikit-learn 
 - scikit-image
+
+
+# 文件含义
+
+- get_data_v1 仅仅是训练数据的id，没有具体的获得数据
+- get_data_v2 增加关联的数据

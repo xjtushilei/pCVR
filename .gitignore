@@ -13,6 +13,7 @@ __pycache__/
 # Package Files #
 *.jar
 *.war
+*.data
 .idea/*
 .idea*
 \.idea*
