@@ -17,7 +17,27 @@
 - scikit-image
 
 
-# 文件含义
+# 结果统计 
+- 总数：`3749528`
+- label_1: `93262`
+- label_0: `3656266`
 
+显然是一个不平衡的数据集
+
+# data文件含义
 - get_data_v1 仅仅是训练数据的id，没有具体的获得数据
-- get_data_v2 增加关联的数据
+- get_data_v2 增加关联的数据（目前还没有app记录，以后版本可以考虑用户社团发现）
+- get_data_v3 解决数据不平衡问题：采用复制数据方法，来提高数据平衡性
+
+# 模型文件
+注意：请使用对应版本的数据
+- dense  全连接层
+- lstm  lstm层
+
+# 经验
+- 损失函数用binary_crossentropy（又叫做logloss）
+- 加入 `BatchNormalization` 和 `dropout` 解决了loss直接收敛的问题
+- 考虑直接在数据层归一化。
+
+# 结果
+- lstm_v2_bak.py 的在迭代一千次的情况下，达到了loss：0.084，并且还没有完全收敛，改天可以继续迭代。

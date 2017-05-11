@@ -22,7 +22,7 @@ user_path = root_path + 'user.csv'
 user_app_actions_path = root_path + 'user_app_actions.csv'
 user_installedapps_path = root_path + 'user_installedapps.csv'
 
-train_path = 'some_train.csv'
+# train_path = 'some_train.csv'
 
 x = []
 y = []
@@ -115,14 +115,19 @@ with open(train_path) as file, open(user_path) as user_file, \
         telecomsOperator = int(words[7])
 
         temp = [clickTime] + creativeID_info + userID_info + positionID_info + [connectionType, telecomsOperator]
-        x.append([temp])
+
         # print(x)
         # 构建正确标签
         if words[0] == '1':
             exp = 1
+            # 因为label-1的数据太少，人工复制这么多个。差距了差不多40倍
+            for i in range(40):
+                x.append([temp])
+                y.append(exp)
         else:
             exp = 0
-        y.append(exp)
+            x.append([temp])
+            y.append(exp)
 
 print('训练集问题个数是:', len(x))
 print('标签个数是:', len(y))
@@ -132,14 +137,15 @@ print('test_id集问题个数是:', len(test_id))
 # 正确的标签集合转化为noe-hot形式
 y = np_utils.to_categorical(y)
 
-print(y)
+print("人工调整后的train数据大小：", len(x))
+# print(y)
 x = np.array(x)
 y = np.array(y)
 test_id = np.array(test_id)
 test = np.array(test)
 data = (x, y, test_id, test)
 print("开始将所有数据序列化到本地...")
-with open('get_data_v2.data', 'wb') as train_data_file:
+with open('get_data_v3.data', 'wb') as train_data_file:
     pickle.dump(data, train_data_file)
 # 前90%是训练数据，后10%是测试数据,通过反向传播来进行预测！
 # split_at = len(x) - len(x) // 10

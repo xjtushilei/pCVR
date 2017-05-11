@@ -9,6 +9,7 @@ def my_logloss(act, pred):
     pred = K.minimum(1 - epsilon, pred)
     ll = K.sum(act * K.log(pred) + (1 - act) * K.log(1 - pred))
     ll = ll * -1.0 / K.shape(act)[0]
+
     return ll
 
 
