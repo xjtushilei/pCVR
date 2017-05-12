@@ -30,13 +30,25 @@ def logloss(act, pred):
 
 def get_how_much_time(time_str, year_month='2017-01', start_date_time='2017-01-010000'):
     """
-    通过输入xxxxxx格式的时间，得到一个时间差。单位是秒
+    通过输入xxxxxx格式的时间，得到一个时间差。单位是秒（相对于1号）
     """
     t_str = year_month + "-" + time_str
     t1 = datetime.datetime.strptime(t_str, '%Y-%m-%d%H%M')
     t2 = datetime.datetime.strptime(start_date_time, '%Y-%m-%d%H%M')
     how_long = t1.timestamp() - t2.timestamp()
     return how_long
+
+
+def get_how_much_time_of_days(time_str, year_month='2017-01', start_date_time='2017-01-010000'):
+    """
+    通过输入xxxxxx格式的时间，得到一个时间差。单位是天（相对于15号）
+    """
+    t_str = year_month + "-" + time_str
+    t1 = datetime.datetime.strptime(t_str, '%Y-%m-%d%H%M')
+    t2 = datetime.datetime.strptime(start_date_time, '%Y-%m-%d%H%M')
+    x = t1 - t2
+    # print(type(x.days-15))
+    return x.days-15
 
 
 def get_ad_info(ad_dict, app_categories_dict, creativeID):

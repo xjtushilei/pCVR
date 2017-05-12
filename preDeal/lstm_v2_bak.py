@@ -45,7 +45,7 @@ print("开始构建模型...")
 # 构建模型
 model_name = 'lstm'
 HIDDEN_SIZE = 256
-BATCH_SIZE = 2500
+BATCH_SIZE = 1500
 # LSTM = layers.LSTM
 model = Sequential()
 print('首层输入维度是:', x_val.shape[2])
@@ -59,9 +59,10 @@ model.add(layers.normalization.BatchNormalization())
 model.add(layers.Dense(HIDDEN_SIZE))
 model.add(layers.Dense(2))
 model.add(layers.Activation('sigmoid'))
-sgd = optimizers.SGD(lr=0.1, clipvalue=0.5)
+sgd = optimizers.SGD(lr=1, clipvalue=0.5)
+Nadam=optimizers.Nadam(lr=0.00002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, schedule_decay=0.00004)
 model.compile(loss='binary_crossentropy',
-              optimizer='Nadam',
+              optimizer=sgd,
               metrics=['binary_accuracy'])
 
 model.summary()
@@ -69,7 +70,7 @@ print("开始训练模型...")
 model.fit(x_train, y_train,
           batch_size=BATCH_SIZE,
           # sample_weight=sample_weight,
-          epochs=1000,
+          epochs=100,
           validation_data=(x_val, y_val))
 
 model.save('lstm_v2.h5')
@@ -78,7 +79,7 @@ print("开始预测模型...")
 predict = model.predict(test[0:], batch_size=5000, verbose=1)
 print(predict[:, 1:50])
 print("开始将预测结果写入csv...")
-with open('lstm_v2_submission.csv', 'w') as file:
+with open('lstm_v2_bak_submission.csv', 'w') as file:
     file.write('instanceID,prob\n')
     index = 0
     for one in predict[:, 1:]:

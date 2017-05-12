@@ -22,7 +22,7 @@ user_path = root_path + 'user.csv'
 user_app_actions_path = root_path + 'user_app_actions.csv'
 user_installedapps_path = root_path + 'user_installedapps.csv'
 
-train_path = 'some_train.csv'
+# train_path = 'some_train.csv'
 
 x = []
 y = []
@@ -89,7 +89,7 @@ with open(train_path) as file, open(user_path) as user_file, \
         telecomsOperator = int(words[7])
 
         temp = [clickTime] + creativeID_info + userID_info + positionID_info + [connectionType, telecomsOperator]
-        x.append([temp])
+        x.append(temp)
         # print(x)
         # 构建正确标签
         if words[0] == '1':
@@ -121,7 +121,7 @@ with open(train_path) as file, open(user_path) as user_file, \
         # 运营商：属于广告上下文信息
         telecomsOperator = int(words[7])
         temp = [clickTime] + creativeID_info + userID_info + positionID_info + [connectionType, telecomsOperator]
-        test.append([temp])
+        test.append(temp)
 
 
 print('训练集问题个数是:', len(x))
@@ -130,16 +130,17 @@ print('test集问题个数是:', len(test))
 print('test_id集问题个数是:', len(test_id))
 
 # 正确的标签集合转化为noe-hot形式
-y = np_utils.to_categorical(y)
+# y = np_utils.to_categorical(y)
 
 # print(y)
 x = np.array(x)
 y = np.array(y)
+print("x的shape:", x.shape)
 test_id = np.array(test_id)
 test = np.array(test)
 data = (x, y, test_id, test)
 print("开始将所有数据序列化到本地...")
-with open('get_data_v2.data', 'wb') as train_data_file:
+with open('get_data_v4.1.data', 'wb') as train_data_file:
     pickle.dump(data, train_data_file)
 # 前90%是训练数据，后10%是测试数据,通过反向传播来进行预测！
 # split_at = len(x) - len(x) // 10
