@@ -41,14 +41,28 @@ def get_how_much_time(time_str, year_month='2017-01', start_date_time='2017-01-0
 
 def get_how_much_time_of_days(time_str, year_month='2017-01', start_date_time='2017-01-010000'):
     """
-    通过输入xxxxxx格式的时间，得到一个时间差。单位是天（相对于15号）
+    通过输入xxxxxx格式的时间，得到一个时间差。单位是天（相对于1号）
     """
     t_str = year_month + "-" + time_str
     t1 = datetime.datetime.strptime(t_str, '%Y-%m-%d%H%M')
     t2 = datetime.datetime.strptime(start_date_time, '%Y-%m-%d%H%M')
     x = t1 - t2
     # print(type(x.days-15))
-    return x.days-15
+    return x.days
+
+
+def get_app_categories(app_categories_dict, appID):  # 获取广告类别目录
+    app_categories = app_categories_dict[appID]
+    if app_categories == '0':
+        return [0, 00]
+    elif len(app_categories) == 1:
+        return [int(app_categories), 00]
+    elif len(app_categories) == 3:
+        # print("app类别:", app_categories)
+        # print("len", len(app_categories))
+        return [int(app_categories[0]), int(str(app_categories[1]) + str(app_categories[2]))]
+    else:
+        raise Exception('类别解析存在bug，请审查重新编写')
 
 
 def get_ad_info(ad_dict, app_categories_dict, creativeID):
@@ -62,26 +76,129 @@ def get_ad_info(ad_dict, app_categories_dict, creativeID):
     words = position.split(',')
     adID = int(words[1])
     camgaignID = int(words[2])  # 推广计划是广告的集合，类似电脑文件夹功能
-    advertiserID = int(words[3])  # 广告主id
-
-    def get_app_categories(app_categories_dict, appID):  # 获取广告类别目录
-        app_categories = app_categories_dict[appID]
-        if app_categories == '0':
-            return [0, 00]
-        elif len(app_categories) == 1:
-            return [int(app_categories), 00]
-        elif len(app_categories) == 3:
-            # print("app类别:", app_categories)
-            # print("len", len(app_categories))
-            return [int(app_categories[0]), int(str(app_categories[1] + app_categories[2]))]
-        else:
-            raise Exception('类别解析存在bug，请审查重新编写')
+    advertiserID = int(words[3])  # 账户id
 
     appID = int(words[4])
     app_categories = get_app_categories(app_categories_dict, appID)  # 广告类别
     appPlatform = int(words[5])  # app 平台系统，入如苹果、安卓等
 
     return [camgaignID, advertiserID] + app_categories + [appPlatform]
+
+
+def get_ad_percent(ad_xx_dict, target_id):
+    label_1 = ad_xx_dict[1].get(target_id, 0)
+    label_0 = ad_xx_dict[0].get(target_id, 0)
+    if label_1 + label_0 == 0:
+        baifenbi = 0
+    else:
+        baifenbi = label_1 / (label_1 + label_0)
+        baifenbi = round(baifenbi, 7)
+    return baifenbi
+
+
+def get_app_categories_count_dict_big_label(num):
+    if num < 1000:
+        return 1
+    elif 1000 <= num < 10000:
+        return 2
+    elif 10000 <= num < 50000:
+        return 3
+    elif 50000 <= num:
+        return 4
+
+def get_app_categories_count_dict_small_label(num):
+    if num < 1000:
+        return 1
+    elif 1000 <= num < 5000:
+        return 2
+    elif 5000 <= num < 10000:
+        return 3
+    elif 10000 <= num < 30000:
+        return 4
+    elif 30000 <= num:
+        return 5
+
+
+def get_creativeID_num_label(num):
+    if num < 2:
+        return 0
+    elif 2 <= num < 10:
+        return 1
+    elif 10 <= num < 50:
+        return 2
+    elif 50 <= num < 100:
+        return 3
+    elif 100 <= num < 300:
+        return 4
+    elif 300 <= num < 500:
+        return 5
+    elif 500 <= num < 1000:
+        return 6
+    elif 1000 <= num < 2000:
+        return 7
+    elif 2000 <= num < 6000:
+        return 8
+    elif num >= 6000:
+        return 9
+
+
+def get_advertiserID_num_label(num):
+    if num < 30:
+        return 0
+    elif 30 <= num < 100:
+        return 1
+    elif 100 <= num < 200:
+        return 2
+    elif 200 <= num < 500:
+        return 3
+    elif 500 <= num < 1000:
+        return 4
+    elif 1000 <= num < 2000:
+        return 5
+    elif 2000 <= num < 5000:
+        return 6
+    elif 5000 <= num < 10000:
+        return 7
+    elif num >= 10000:
+        return 8
+
+
+def get_camgaignID_num_label(num):
+    if num < 30:
+        return 0
+    elif 30 <= num < 100:
+        return 1
+    elif 100 <= num < 200:
+        return 2
+    elif 200 <= num < 500:
+        return 3
+    elif 500 <= num < 1000:
+        return 4
+    elif 1000 <= num < 2000:
+        return 5
+    elif 2000 <= num < 6000:
+        return 6
+    elif num >= 6000:
+        return 7
+
+
+def get_adID_num_label(num):
+    if num < 30:
+        return 0
+    elif 30 <= num < 100:
+        return 1
+    elif 100 <= num < 200:
+        return 2
+    elif 200 <= num < 500:
+        return 3
+    elif 500 <= num < 1000:
+        return 4
+    elif 1000 <= num < 2000:
+        return 5
+    elif 2000 <= num < 6000:
+        return 6
+    elif num >= 6000:
+        return 7
 
 
 def get_position_info(position_dict, positionID):

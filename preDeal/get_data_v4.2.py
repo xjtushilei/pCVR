@@ -46,57 +46,121 @@ with open(train_path) as file, open(user_path) as user_file, \
         app_categories_dict[int(words[0])] = words[1]
     print("开始生成ad字典...")
     ad_list = [L.rstrip('\n') for L in ad_file][1:]
-    ad_dict = {}
+    ad_table_dict = {}
     for line in ad_list:
         words = line.split(",")
-        ad_dict[int(words[0])] = line
-    print("开始生成user字典...")
-    user_list = [L.rstrip('\n') for L in user_file][1:]
-    user_dict = {}
-    for line in user_list:
-        words = line.split(",")
-        user_dict[int(words[0])] = line
-    print("开始生成position字典...")
-    position_list = [L.rstrip('\n') for L in position_file][1:]
-    position_dict = {}
-    for line in position_list:
-        words = line.split(",")
-        position_dict[int(words[0])] = line
+        ad_table_dict[int(words[0])] = line
+    # print("开始生成user字典...")
+    # user_list = [L.rstrip('\n') for L in user_file][1:]
+    # user_dict = {}
+    # for line in user_list:
+    #     words = line.split(",")
+    #     user_dict[int(words[0])] = line
+    # print("开始生成position字典...")
+    # position_list = [L.rstrip('\n') for L in position_file][1:]
+    # position_dict = {}
+    # for line in position_list:
+    #     words = line.split(",")
+    #     position_dict[int(words[0])] = line
+    # print('开始获得ad_hot_dict')
+    # ad_table_count_dict = {}
+    # adID_dict_count_dict = {}
+    # campaignID_count_dict = {}
+    # advertiserID_count_dict = {}
+    # app_categories_count_dict_big = {}
+    # app_categories_count_dict_small = {}
+    # for line in all_the_text[1:]:
+    #     words = line.split(",")
+    #     if words[0] == '1':
+    #         exp = 1
+    #     else:
+    #         exp = 0
+    #     # 素材
+    #     creativeID = int(words[3])
+    #     ad_table_count_dict_exp = ad_table_count_dict.get(exp, {})
+    #     ad_table_count_dict_exp[creativeID] = ad_table_count_dict_exp.get(creativeID, 0) + 1
+    #     ad_table_count_dict[exp] = ad_table_count_dict_exp
+    #     # 账户
+    #     advertiserID = int(ad_table_dict[creativeID].split(',')[3])
+    #     advertiserID_count_dict_exp = advertiserID_count_dict.get(exp, {})
+    #     advertiserID_count_dict_exp[advertiserID] = advertiserID_count_dict_exp.get(advertiserID, 0) + 1
+    #     advertiserID_count_dict[exp] = advertiserID_count_dict_exp
+    #     # 推广计划
+    #     campaignID = int(ad_table_dict[creativeID].split(',')[2])
+    #     campaignID_count_dict_exp = campaignID_count_dict.get(exp, {})
+    #     campaignID_count_dict_exp[campaignID] = campaignID_count_dict_exp.get(campaignID, 0) + 1
+    #     campaignID_count_dict[exp] = campaignID_count_dict_exp
+    #     # 广告
+    #     adID = int(ad_table_dict[creativeID].split(',')[1])
+    #     adID_dict_count_dict_exp = adID_dict_count_dict.get(exp, {})
+    #     adID_dict_count_dict_exp[adID] = adID_dict_count_dict_exp.get(adID, 0) + 1
+    #     adID_dict_count_dict[exp] = adID_dict_count_dict_exp
+    #     # 类别
+    #     appID = int(ad_table_dict[creativeID].split(',')[4])
+    #     app_categories = get_app_categories(app_categories_dict, appID)  # 广告类别
+    #     # print(app_categories)
+    #     category = app_categories[0]  # 大类别
+    #     app_categories_count_dict_exp = app_categories_count_dict_big.get(exp, {})
+    #     app_categories_count_dict_exp[category] = app_categories_count_dict_exp.get(category, 0) + 1
+    #     app_categories_count_dict_big[exp] = app_categories_count_dict_exp
+    #     category = app_categories[1]  # 小类别
+    #     app_categories_count_dict_exp = app_categories_count_dict_small.get(exp, {})
+    #     app_categories_count_dict_exp[category] = app_categories_count_dict_exp.get(category, 0) + 1
+    #     app_categories_count_dict_small[exp] = app_categories_count_dict_exp
+
+    with open('C:\\Users\\shilei\\Desktop\\temp.csv', 'w') as temp_file:
+
+            # myset = set()
+            # for line in all_the_text[1:]:
+            #     words = line.split(",")
+            #     creativeID = int(words[3])
+            #     myset.add(creativeID)
+            # for one in myset:
+            #     label_1 = app_categories_count_dict[1].get(one, 0)
+            #     label_0 = app_categories_count_dict[0].get(one, 0)
+            #     if label_1 + label_0 == 0:
+            #         baifenbi = 0
+            #     else:
+            #         baifenbi = label_1 / (label_1 + label_0)
+            #         baifenbi = round(baifenbi, 5)
+            #     temp_file.write(str(one) + ',' + str(round(baifenbi, 5)) + '\n')
 
     print("开始处理训练数据...")
-    # 处理训练数据！跳过首行
-    for line in all_the_text[1:]:
-        words = line.split(",")
-        # 各种维度的待训练数据
-
-        # 点击广告的时间
-        clickTime = get_how_much_time_of_days(words[1])
-
-        # 处理creativeID相关数据
-        creativeID = int(words[3])
-        creativeID_info = get_ad_info(ad_dict, app_categories_dict, creativeID)
-        # 处理user相关信息
-        userID = int(words[4])
-        userID_info = get_user_info(user_dict, userID)
-
-        # 处理 广告位置信息：属于广告上下文信息
-        positionID = int(words[5])
-        positionID_info = get_position_info(position_dict, positionID)
-
-        # 联网方式：属于广告上下文信息
-        connectionType = int(words[6])
-        # 运营商：属于广告上下文信息
-        telecomsOperator = int(words[7])
-
-        temp = [clickTime] + creativeID_info + userID_info + positionID_info + [connectionType, telecomsOperator]
-        x.append(temp)
-        # print(x)
-        # 构建正确标签
-        if words[0] == '1':
-            exp = 1
-        else:
-            exp = 0
-        y.append(exp)
+    # # 处理训练数据！跳过首行
+    # for line in all_the_text[1:]:
+    #     words = line.split(",")
+    #     # 各种维度的待训练数据
+    #     # 构建正确标签
+    #     if words[0] == '1':
+    #         exp = 1
+    #     else:
+    #         exp = 0
+    #     # 点击广告的时间
+    #     clickTime = get_how_much_time_of_days(words[1])
+    #     if clickTime >= 28 and exp == 0:
+    #         continue
+    #     # 处理creativeID相关数据
+    #     creativeID = int(words[3])
+    #     creativeID_info = get_ad_info(ad_table_dict, app_categories_dict, creativeID)
+    #     # 处理user相关信息
+    #     userID = int(words[4])
+    #     userID_info = get_user_info(user_dict, userID)
+    #
+    #     # 处理 广告位置信息：属于广告上下文信息
+    #     positionID = int(words[5])
+    #     positionID_info = get_position_info(position_dict, positionID)
+    #
+    #     # 联网方式：属于广告上下文信息
+    #     connectionType = int(words[6])
+    #     # 运营商：属于广告上下文信息
+    #     telecomsOperator = int(words[7])
+    #
+    #     temp = [clickTime] + creativeID_info + userID_info + positionID_info + [connectionType, telecomsOperator]
+    #     x.append(temp)
+    #     # print(x)
+    #
+    #     y.append(exp)
+'''
     print("开始处理test数据...")
     # 处理test数据 , 跳过首行
     for line in test_all_the_text[1:]:
@@ -109,7 +173,7 @@ with open(train_path) as file, open(user_path) as user_file, \
         clickTime = get_how_much_time_of_days(words[2])
         # 处理creativeID相关数据
         creativeID = int(words[3])
-        creativeID_info = get_ad_info(ad_dict, app_categories_dict, creativeID)
+        creativeID_info = get_ad_info(ad_table_dict, app_categories_dict, creativeID)
         # 处理user相关信息
         userID = int(words[4])
         userID_info = get_user_info(user_dict, userID)
@@ -122,7 +186,7 @@ with open(train_path) as file, open(user_path) as user_file, \
         telecomsOperator = int(words[7])
         temp = [clickTime] + creativeID_info + userID_info + positionID_info + [connectionType, telecomsOperator]
         test.append(temp)
-
+'''
 
 print('训练集问题个数是:', len(x))
 print('标签个数是:', len(y))

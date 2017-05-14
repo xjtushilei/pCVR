@@ -1,5 +1,4 @@
-with open('a.txt', 'r', encoding='utf-8') as f:
-    print(f.readlines())
-    f.seek(0)
-    for i, x in enumerate(f.readlines()):
-        print(i, ':', x, end='')
+app_categories = '123'
+
+print([int(app_categories[0]), int(str(app_categories[1]) + str(app_categories[2]))])
+print([int(app_categories[0]), int(str(app_categories[1]+app_categories[2]))])
