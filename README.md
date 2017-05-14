@@ -81,19 +81,15 @@
 
 - app平台
     - 取值：Android，iOS，未知
-    - 分布：TODO
 - app大类别
     - 取值：百位数，0~9，0为未知
-    - 分布：TODO
 - app小类别
     - 取值：0~99（实际上在训练数据中都是0~9）
 - 账户ID(advertiserID)
     - 统计：91个
-    - 分布：TODO
     - 取值：想不到好的，感觉这个特征没用，暂时不用
 - 推广计划ID(campaignID)
     - 统计：720个
-    - 分布：TODO
     - 取值：想不到好的，感觉这个特征没用，暂时不用
 - 该素材(creativeID)转化概率
 - 该素材(creativeID)多次点击次数分布
@@ -115,20 +111,21 @@
     - 统计：0~1000:1,1000~5000:2,5000~10000:3,10000~30000:4,>30000:5
 
 ### Context features（上下文特征）
+- 联网方式(connectionType)转化概率
 - 联网方式(connectionType)
-    取值：2G，3G，4G，WIFI，未知
-    统计分布：TODO
+    - 取值：2G，3G，4G，WIFI，未知
+- 运营商(telecomsOperator)的转化概率
 - 运营商(telecomsOperator)
     - 取值：中国移动，中国联通，中国电信，未知
-    - 统计分布：TODO
+- 广告位类型(positionType)的转化概率
 - 广告位类型(positionType)
     - 取值：0,1,2,3,4,5
+- 广告位ID(positionID)的转化概率
 - 广告位ID(positionID)
-    分布：
-    取值：没想好，先瞎用
-- 站点集合ID(sitesetID)
-    分布：
-    取值：没想好，先瞎用
+    - 统计取值：1~10:1,10~50,：2,50~200:3,200~500:4,500~1000:5，1000~2000:6,2000~5000:7，5000以上：8
+- 站点集合ID(sitesetID，多个广告位的聚合，如QQ空间)的转化概率
+- 站点集合ID(sitesetID，多个广告位的聚合，如QQ空间)
+    - 取值：0,1,2
 
 
 # data文件含义

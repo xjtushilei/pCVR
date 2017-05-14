@@ -72,20 +72,24 @@ def get_ad_info(ad_dict, app_categories_dict, creativeID):
     :param creativeID: 
     :return: 
     '''
-    position = ad_dict[creativeID]
-    words = position.split(',')
+    line = ad_dict[creativeID]
+    words = line.split(',')
     adID = int(words[1])
     camgaignID = int(words[2])  # 推广计划是广告的集合，类似电脑文件夹功能
     advertiserID = int(words[3])  # 账户id
 
     appID = int(words[4])
     app_categories = get_app_categories(app_categories_dict, appID)  # 广告类别
-    appPlatform = int(words[5])  # app 平台系统，入如苹果、安卓等
+    appPlatform = int(words[5])  # app 平台系统，如苹果、安卓等
 
-    return [camgaignID, advertiserID] + app_categories + [appPlatform]
+    return app_categories + [appPlatform]
 
 
-def get_ad_percent(ad_xx_dict, target_id):
+def get_label_1(ad_xx_dict, target_id):
+    label_1 = ad_xx_dict[1].get(target_id, 0)
+    return label_1
+
+def get_percent(ad_xx_dict, target_id):
     label_1 = ad_xx_dict[1].get(target_id, 0)
     label_0 = ad_xx_dict[0].get(target_id, 0)
     if label_1 + label_0 == 0:
@@ -94,6 +98,25 @@ def get_ad_percent(ad_xx_dict, target_id):
         baifenbi = label_1 / (label_1 + label_0)
         baifenbi = round(baifenbi, 7)
     return baifenbi
+
+
+def get_positionID_num_label(num):
+    if num < 10:
+        return 1
+    elif 10 <= num < 50:
+        return 2
+    elif 50 <= num < 200:
+        return 3
+    elif 200 <= num < 500:
+        return 4
+    elif 500 <= num < 1000:
+        return 5
+    elif 1000 <= num < 2000:
+        return 6
+    elif 2000 <= num < 5000:
+        return 7
+    elif num >= 5000:
+        return 8
 
 
 def get_app_categories_count_dict_big_label(num):
@@ -105,6 +128,7 @@ def get_app_categories_count_dict_big_label(num):
         return 3
     elif 50000 <= num:
         return 4
+
 
 def get_app_categories_count_dict_small_label(num):
     if num < 1000:
@@ -214,7 +238,7 @@ def get_position_info(position_dict, positionID):
     positionType = int(words[2])
     # 站点集合ID
     sitesetID = int(words[1])
-    return [sitesetID, positionID]
+    return [sitesetID, positionType]
 
 
 def get_user_info(user_dict, userID):
@@ -228,20 +252,26 @@ def get_user_info(user_dict, userID):
     words = user.split(',')
     # print(words[0], userID)
     # 处理年龄
-    if int(words[1]) < 18:
+    if int(words[1]) == 0:
+        age = 0
+    elif int(words[1]) < 10:
         age = 1
-    elif 18 <= int(words[1]) < 25:
+    elif 10 <= int(words[1]) < 15:
         age = 2
-    elif 25 <= int(words[1]) < 30:
+    elif 15 <= int(words[1]) <18:
         age = 3
+    elif 18 <= int(words[1]) < 24:
+        age = 4
+    elif 24 <= int(words[1]) < 30:
+        age = 5
     elif 30 <= int(words[1]) < 35:
-        age = 2
+        age = 6
     elif 35 <= int(words[1]) < 40:
-        age = 2
+        age = 7
     elif 40 <= int(words[1]) < 50:
-        age = 2
+        age = 8
     elif int(words[1]) >= 50:
-        age = 2
+        age = 9
 
     gender = int(words[2])  # 性别
     education = int(words[3])  # 教育

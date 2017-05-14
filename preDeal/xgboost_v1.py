@@ -27,10 +27,16 @@ param = {'booster': 'gbtree',
          'max_depth': 10,
          'max_delta_step': 10,
          'learning_rate': 0.01,
-         # 'objective': 'logloss',
+         'min_child_weight': 5,
+         'objective': 'binary:logistic',
          'eval_metric': 'logloss',
+         'reg_alpha': 0.005,
+         'subsample': 0.8,
+         'colsample_bytree': 0.8,
+         'n_estimators': 3000,
          'silent': True,
-         'nthread ': 8
+         'nthread ': 8,
+         'seed': 27
          }
 num_round = 2000
 bst = xgb.train(param, dtrain, num_round, evallist, verbose_eval=1)
