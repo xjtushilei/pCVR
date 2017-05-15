@@ -194,11 +194,11 @@ with open(train_path) as file, open(user_path) as user_file, \
         categories_small_label = get_app_categories_count_dict_small_label(
             get_label_1(app_categories_count_dict_small, app_categories_and_appPlatform[1]))
 
-        creativeID_info = app_categories_and_appPlatform + [creativeID_float, creativeID_label, adID_float, adID_label,
-                                                            campaignID_float, campaignID_label, advertiserID_float,
+        creativeID_info = app_categories_and_appPlatform + [creativeID_label,  adID_label,
+                                                             campaignID_label,
                                                             advertiserID_label,
-                                                            categories_big_float, categories_big_label,
-                                                            categories_small_float, categories_small_label]
+                                                             categories_big_label,
+                                                             categories_small_label]
         '''
         处理user相关信息
         '''
@@ -213,19 +213,15 @@ with open(train_path) as file, open(user_path) as user_file, \
         positionID_label = get_positionID_num_label(get_label_1(positionID_count_dict, positionID))
         # 站点集合ID
         sitesetID = int(position_dict[positionID].split(',')[1])
-        sitesetID_float = get_percent(sitesetID_count_dict, sitesetID)
         # 广告位类型
         positionType = int(position_dict[positionID].split(',')[2])
-        positionType_float = get_percent(positionType_count_dict, positionType)
         # 联网方式：属于广告上下文信息
         connectionType = int(words[6])
-        connectionType_big_float = get_percent(connectionType_count_dict, connectionType)
         # 运营商：属于广告上下文信息
         telecomsOperator = int(words[7])
-        telecomsOperator_big_float = get_percent(telecomsOperator_count_dict, telecomsOperator)
-        positionID_info = [positionID_float, positionID_label, sitesetID, sitesetID_float, positionType,
-                           positionType_float, connectionType, connectionType_big_float, telecomsOperator,
-                           telecomsOperator_big_float]
+        positionID_info = [ positionID_label, sitesetID,  positionType,
+                            connectionType,  telecomsOperator]
+
 
         temp = [clickTime] + creativeID_info + userID_info + positionID_info
         x.append(temp)
@@ -267,11 +263,11 @@ with open(train_path) as file, open(user_path) as user_file, \
         categories_small_label = get_app_categories_count_dict_small_label(
             get_label_1(app_categories_count_dict_small, app_categories_and_appPlatform[1]))
 
-        creativeID_info = app_categories_and_appPlatform + [creativeID_float, creativeID_label, adID_float, adID_label,
-                                                            campaignID_float, campaignID_label, advertiserID_float,
+        creativeID_info = app_categories_and_appPlatform + [ creativeID_label,  adID_label,
+                                                             campaignID_label,
                                                             advertiserID_label,
-                                                            categories_big_float, categories_big_label,
-                                                            categories_small_float, categories_small_label]
+                                                             categories_big_label,
+                                                             categories_small_label]
         '''
         处理user相关信息
         '''
@@ -296,9 +292,9 @@ with open(train_path) as file, open(user_path) as user_file, \
         # 运营商：属于广告上下文信息
         telecomsOperator = int(words[7])
         telecomsOperator_big_float = get_percent(telecomsOperator_count_dict, telecomsOperator)
-        positionID_info = [positionID_float, positionID_label, sitesetID, sitesetID_float, positionType,
-                           positionType_float, connectionType, connectionType_big_float, telecomsOperator,
-                           telecomsOperator_big_float]
+        positionID_info = [ positionID_label, sitesetID,  positionType,
+                            connectionType,  telecomsOperator,
+                           ]
 
         temp = [clickTime] + creativeID_info + userID_info + positionID_info
         test.append(temp)
@@ -324,7 +320,7 @@ print("x的shape:", x.shape)
 
 data = (x, y, test_id, test)
 print("开始将所有数据序列化到本地...")
-with open('get_data_v4.2.data', 'wb') as train_data_file:
+with open('get_data_v4.3.data', 'wb') as train_data_file:
     pickle.dump(data, train_data_file)
 # 前90%是训练数据，后10%是测试数据,通过反向传播来进行预测！
 # split_at = len(x) - len(x) // 10
