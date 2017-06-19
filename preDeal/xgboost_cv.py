@@ -42,8 +42,7 @@ clf = GridSearchCV(
         reg_lambda=1,
         seed=27),
     param_grid=parameters,
-    scoring='roc_auc',
-    verbose=1)
+    verbose=0)
 clf.fit(x_train, y_train)
 print(clf.best_score_)
 print(clf.best_params_)
